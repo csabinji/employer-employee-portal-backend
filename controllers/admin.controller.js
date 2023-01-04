@@ -1,6 +1,6 @@
 const responseHelper = require("../helper/responseHelper");
 const { Admin } = require("../models");
-const { SERVER_ERROR, PASSWORD_NOT_MATCHED, SAME_EMAIL, ADMIN_ADDED } = require("../utils/constVariables");
+const { SERVER_ERROR, PASSWORD_NOT_MATCHED, SAME_EMAIL, ADMIN_ADDED, INVALID_PASSWORD, ADMIN_NOT_FOUND, LOGIN_SUCCESS } = require("../utils/constVariables");
 const bcrypt = require("bcrypt");
 const tokenGenerator = require("../helper/tokenGenerator");
 
@@ -28,6 +28,27 @@ module.exports = {
 
             const token = await tokenGenerator(newAdmin);
             return responseHelper(true, ADMIN_ADDED, 201, '', token, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
+    },
+    adminLogin: async (req, res) => {
+        try {
+            const { email, password } = req.body;
+
+            // Find the admin by email
+            const admin = await Admin.findOne({ email });
+            if (!admin) return responseHelper(false, ADMIN_NOT_FOUND, 404, '', {}, res);
+
+            // Check if the provided password is correct
+            const isPasswordCorrect = await bcrypt.compare(password, admin['password']);
+            if (!isPasswordCorrect) return responseHelper(false, INVALID_PASSWORD, 401, '', {}, res);
+
+            // Generate a JWT token
+            const token = await tokenGenerator(admin);
+
+            return responseHelper(true, LOGIN_SUCCESS, 200, '', token, res);
         } catch (error) {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);

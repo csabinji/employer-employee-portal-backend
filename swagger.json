@@ -37,6 +37,38 @@
                     }
                 }
             }
+        },
+        "/api/v1/admin/login": {
+            "post": {
+                "summary": "Admin Login",
+                "tags": [
+                    "Admin"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/login"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -60,6 +92,21 @@
                 "required": [
                     "name",
                     "confirm_password",
+                    "email",
+                    "password"
+                ]
+            },
+            "login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
                     "email",
                     "password"
                 ]
