@@ -1,6 +1,6 @@
 const responseHelper = require("../helper/responseHelper");
-const { Admin } = require("../models");
-const { SERVER_ERROR, PASSWORD_NOT_MATCHED, SAME_EMAIL, ADMIN_ADDED, INVALID_PASSWORD, ADMIN_NOT_FOUND, LOGIN_SUCCESS } = require("../utils/constVariables");
+const { Admin, Employer } = require("../models");
+const { SERVER_ERROR, PASSWORD_NOT_MATCHED, SAME_EMAIL, ADMIN_ADDED, INVALID_PASSWORD, ADMIN_NOT_FOUND, LOGIN_SUCCESS, EMPLOYER_ADDED } = require("../utils/constVariables");
 const bcrypt = require("bcrypt");
 const tokenGenerator = require("../helper/tokenGenerator");
 
@@ -49,6 +49,36 @@ module.exports = {
             const token = await tokenGenerator(admin);
 
             return responseHelper(true, LOGIN_SUCCESS, 200, '', token, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
+    },
+    addEmployer: async (req, res) => {
+        try {
+            const { name, company, email, password, confirm_password } = req.body;
+
+            // Check if there is already an employer with the same email
+            const employerWithSameEmail = await Employer.findOne({ email });
+            if (employerWithSameEmail) return responseHelper(false, SAME_EMAIL, 409, '', {}, res);
+
+            if (password !== confirm_password) return responseHelper(false, PASSWORD_NOT_MATCHED, 422, '', {}, res);
+
+            // Hash the password
+            const encryptedPassword = await bcrypt.hash(password, 10);
+
+            // Create a new Employer document
+            const employer = new Employer({
+                name,
+                email,
+                company,
+                password: encryptedPassword
+            });
+
+            // Save the employer to the database
+            const newEmployer = await employer.save();
+
+            return responseHelper(true, EMPLOYER_ADDED, 201, '', newEmployer, res);
         } catch (error) {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);

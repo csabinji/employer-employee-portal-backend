@@ -3,6 +3,8 @@ module.exports = {
     ADMIN_ADDED: 'New admin added successfully',
     ADMIN_NOT_FOUND: 'Admin with this email do not exists',
 
+    EMPLOYER_ADDED: 'New Employer added successfully',
+
     INVALID_PASSWORD: 'Incorrect password',
 
     LOGIN_SUCCESS: 'You are successfully logged in',
