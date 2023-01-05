@@ -1,13 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const { router, cors, passport } = require('./config');
+const { router, cors } = require('./config');
 const { PORT } = require('./config/env');
 
 require(`./config/dbConnection`);
-
-// passport js
-app.use(passport.initialize());
 
 // swagger implementation
 const swaggerUi = require(`swagger-ui-express`);

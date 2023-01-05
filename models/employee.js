@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Schema.Types;
 
-const employerSchema = new mongoose.Schema(
+const employeeSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -16,12 +15,14 @@ const employerSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        employee: [
-            {
-                type: ObjectId,
-                ref: 'Employee',
-            },
-        ]
+        yearly_salary: {
+            type: Number,
+            required: true
+        },
+        title: {
+            type: String,
+            required: true
+        },
     },
     {
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
@@ -29,4 +30,4 @@ const employerSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.model('Employer', employerSchema);
+module.exports = mongoose.model('Employee', employeeSchema);

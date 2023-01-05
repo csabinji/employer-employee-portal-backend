@@ -4,6 +4,9 @@ module.exports = {
     ADMIN_NOT_FOUND: 'Admin with this email do not exists',
 
     EMPLOYER_ADDED: 'New Employer added successfully',
+    EMPLOYER_NOT_FOUND: 'Employer with this email do not exists',
+
+    EMPLOYEE_ADDED: 'New Employee added successfully',
 
     INVALID_PASSWORD: 'Incorrect password',
 

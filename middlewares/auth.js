@@ -5,7 +5,7 @@ const { Admin } = require('../models');
 
 const auth = async (req, res, next, model) => {
     // Get the JWT from the request header
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
         return responseHelper(false, 'UNAUTHORIZED', 401, '', {}, res);
     }
