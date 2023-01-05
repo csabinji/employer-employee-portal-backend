@@ -140,6 +140,45 @@
                     }
                 }
             }
+        },
+        "/api/v1/add/employee": {
+            "post": {
+                "summary": "Add new Employee",
+                "tags": [
+                    "Employer"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/addEmployee"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "$ref": "#/components/securitySchemes/bearerAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -204,6 +243,35 @@
                 "required": [
                     "name",
                     "company",
+                    "confirm_password",
+                    "email",
+                    "password"
+                ]
+            },
+            "addEmployee": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "yearly_salary": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "confirm_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
                     "confirm_password",
                     "email",
                     "password"

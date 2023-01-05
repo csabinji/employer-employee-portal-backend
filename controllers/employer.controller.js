@@ -37,6 +37,7 @@ module.exports = {
     addEmployee: async (req, res, next) => {
         try {
             const { name, company, email, password, title, yearly_salary, confirm_password } = req.body;
+            const { _id } = req.user;
 
             // Check if there is already an employee with the same email
             const employeeWithSameEmail = await Employee.findOne({ email });
@@ -59,6 +60,8 @@ module.exports = {
 
             // Save the employee to the database
             const newEmployee = await employee.save();
+
+            await Employer.updateOne({ _id }, { $push: { employee: newEmployee['_id'] } }, { upsert: true });
 
             return responseHelper(true, EMPLOYEE_ADDED, 201, '', newEmployee, res);
         } catch (error) {

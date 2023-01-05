@@ -1,7 +1,7 @@
 const responseHelper = require('../helper/responseHelper');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/env');
-const { Admin } = require('../models');
+const { Admin, Employer, Employee } = require('../models');
 
 const auth = async (req, res, next, model) => {
     // Get the JWT from the request header
@@ -17,7 +17,9 @@ const auth = async (req, res, next, model) => {
         const user = await model.findOne({ _id: decoded.sub }).select('-password');
 
         if (!user) return responseHelper(false, 'UNAUTHORIZED', 401, '', {}, res);
-        
+
+        req.user = user;
+
         next();
     } catch (error) {
         return responseHelper(false, 'UNAUTHORIZED', 401, '', {}, res);
