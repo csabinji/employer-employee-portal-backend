@@ -9,16 +9,16 @@ module.exports = {
         try {
             const { email, password } = req.body;
 
-            // Find the employer by email
-            const employer = await Employee.findOne({ email });
-            if (!employer) return responseHelper(false, EMPLOYEE_NOT_FOUND, 404, '', {}, res);
+            // Find the employee by email
+            const employee = await Employee.findOne({ email });
+            if (!employee) return responseHelper(false, EMPLOYEE_NOT_FOUND, 404, '', {}, res);
 
             // Check if the provided password is correct
-            const isPasswordCorrect = await bcrypt.compare(password, employer['password']);
+            const isPasswordCorrect = await bcrypt.compare(password, employee['password']);
             if (!isPasswordCorrect) return responseHelper(false, INVALID_PASSWORD, 401, '', {}, res);
 
             // Generate a JWT token
-            const token = await tokenGenerator(employer);
+            const token = await tokenGenerator(employee);
 
             return responseHelper(true, LOGIN_SUCCESS, 200, '', token, res);
         } catch (error) {
