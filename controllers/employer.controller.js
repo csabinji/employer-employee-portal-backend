@@ -68,5 +68,19 @@ module.exports = {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
         }
+    },
+    listEmployee: async (req, res, next) => {
+        try {
+            const { _id } = req.user;
+
+            const employees = await Employer.findById(_id)
+                .populate({ path: 'employee', select: '-password' })
+                .lean();
+
+            return responseHelper(true, EMPLOYEE_ADDED, 201, '', employees ? employees.employee : [], res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
     }
 }

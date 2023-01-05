@@ -3,5 +3,6 @@ const { authEmployer } = require("../middlewares/auth")
 
 module.exports = (router) => {
     router.post('/employer/login', controller.login);
-    router.post('/add/employee', authEmployer, controller.addEmployee)
+    router.post('/employee/add', authEmployer, controller.addEmployee);
+    router.post('/employee/list', authEmployer, controller.listEmployee);
 }

@@ -70,7 +70,7 @@
                 }
             }
         },
-        "/api/v1/add/employer": {
+        "/api/v1/employer/add": {
             "post": {
                 "summary": "Add new Employer",
                 "tags": [
@@ -141,7 +141,7 @@
                 }
             }
         },
-        "/api/v1/add/employee": {
+        "/api/v1/employee/add": {
             "post": {
                 "summary": "Add new Employee",
                 "tags": [
@@ -157,6 +157,35 @@
                         }
                     }
                 },
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "$ref": "#/components/securitySchemes/bearerAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
+        },
+        "/api/v1/employee/list": {
+            "post": {
+                "summary": "List all employee",
+                "tags": [
+                    "Employer"
+                ],
                 "security": [
                     {
                         "bearerAuth": {
