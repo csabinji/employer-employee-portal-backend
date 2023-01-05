@@ -11,6 +11,7 @@ const {
 const bcrypt = require("bcrypt");
 const tokenGenerator = require("../helper/tokenGenerator");
 const responseHelper = require("../helper/responseHelper");
+const XLSX = require('xlsx');
 
 module.exports = {
     login: async (req, res) => {
@@ -110,6 +111,36 @@ module.exports = {
             await Employee.deleteOne({ _id: id });
             await Employer.updateOne({ _id: req.user['_id'] }, { $pull: { employee: id } }, { upsert: true });
             return responseHelper(false, 'Employee deleted successfully.', 201, '', {}, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
+    },
+    importEmployee: async (req, res) => {
+        try {
+            if (!req.file) return responseHelper(false, 'XLSX file not found!', 404, '', {}, res);
+
+            const workbook = XLSX.readFile(req.file.path);
+
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+            const jsonData = await XLSX.utils.sheet_to_json(sheet);
+
+            let employee = await Promise.all(jsonData.map(async (emp) => {
+                const userWithSameEmail = await Employee.findOne({ email: emp.email });
+                if (userWithSameEmail) return; // skip this employee if they already exist in the database
+
+                const encryptedPassword = await bcrypt.hash(emp.password.toString(), 10);
+                emp.password = encryptedPassword;
+
+                return emp;
+            }));
+
+            employee = await employee.filter((emp) => emp !== null && emp !== undefined);
+
+            await Employee.create(employee);
+
+            return responseHelper(false, 'Employee details imported.', 201, '', {}, res);
         } catch (error) {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);

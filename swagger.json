@@ -394,6 +394,46 @@
                     }
                 }
             }
+        },
+        "/api/v1/employee/import": {
+            "post": {
+                "summary": "Import Employee",
+                "tags": [
+                    "Employer"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "xlsx",
+                        "required": true,
+                        "schema": {
+                            "type": "file",
+                            "format": "binary"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "$ref": "#/components/securitySchemes/bearerAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -528,6 +568,18 @@
                     "email",
                     "yearly_salary",
                     "title"
+                ]
+            },
+            "importEmployee": {
+                "type": "object",
+                "properties": {
+                    "xlsx": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "required": [
+                    "xlsx"
                 ]
             }
         },
