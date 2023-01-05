@@ -356,6 +356,44 @@
                     }
                 }
             }
+        },
+        "/api/v1/employee/delete/{id}": {
+            "delete": {
+                "summary": "Delete Employee",
+                "tags": [
+                    "Employer"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "employee id",
+                        "required": true
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "$ref": "#/components/securitySchemes/bearerAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
         }
     },
     "components": {

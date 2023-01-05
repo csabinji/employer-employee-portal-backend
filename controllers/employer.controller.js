@@ -91,8 +91,25 @@ module.exports = {
 
             if (!employee) return responseHelper(false, 'Employee not found.', 401, '', {}, res);
 
-            employee = await Employee.findOneAndUpdate({ id }, { ...req.body }, { new: true });
+            employee = await Employee.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true });
             return responseHelper(false, 'Employee info updated.', 201, '', employee, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
+    },
+    deleteEmployee: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+
+            let employee = await Employee.findById(id).lean();
+
+            if (!employee) return responseHelper(false, 'Employee not found.', 401, '', {}, res);
+
+            await Employee.deleteOne({ _id: id });
+            await Employer.updateOne({ _id: req.user['_id'] }, { $pull: { employee: id } }, { upsert: true });
+            return responseHelper(false, 'Employee deleted successfully.', 201, '', {}, res);
         } catch (error) {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
