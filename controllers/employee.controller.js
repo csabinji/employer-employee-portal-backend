@@ -45,7 +45,7 @@ module.exports = {
             if (!employee) return responseHelper(false, 'Employee not found.', 401, '', {}, res);
 
             employee = await Employee.findOneAndUpdate({ _id }, { name, email }, { new: true });
-            return responseHelper(false, 'Employee info updated.', 500, '', employee, res);
+            return responseHelper(false, 'Employee info updated.', 201, '', employee, res);
         } catch (error) {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
