@@ -35,5 +35,20 @@ module.exports = {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
         }
+    },
+    update: async (req, res) => {
+        try {
+            const { _id } = req.user;
+            const { name, email } = req.body;
+            let employee = await Employee.findById(_id).lean();
+
+            if (!employee) return responseHelper(false, 'Employee not found.', 401, '', {}, res);
+
+            employee = await Employee.findOneAndUpdate({ _id }, { name, email }, { new: true });
+            return responseHelper(false, 'Employee info updated.', 500, '', employee, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
     }
 }
