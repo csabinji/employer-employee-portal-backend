@@ -1,0 +1,22 @@
+version: "2.4"
+
+services:
+  eeportal:
+    build: ../eeportal
+    container_name: eeportal
+    hostname: eeportal
+    ports:
+      - "4069:8001"
+    environment:
+      - MONGO_DB_URL=mongodb://mongo:27017/eeportal
+      - PORT=8001
+    volumes:
+      - ./../eeportal:/app
+  mongo:
+    image: mongo
+    hostname: mongo
+    container_name: mongodb
+    volumes:
+      - .mongodb2:/data/db
+    ports:
+      - "27018:27017"

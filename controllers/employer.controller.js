@@ -8,7 +8,7 @@ const {
     INVALID_PASSWORD,
     LOGIN_SUCCESS
 } = require("../utils/constVariables");
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const tokenGenerator = require("../helper/tokenGenerator");
 const responseHelper = require("../helper/responseHelper");
 const XLSX = require('xlsx');
@@ -23,7 +23,7 @@ module.exports = {
             if (!employer) return responseHelper(false, EMPLOYER_NOT_FOUND, 404, '', {}, res);
 
             // Check if the provided password is correct
-            const isPasswordCorrect = await bcrypt.compare(password, employer['password']);
+            const isPasswordCorrect = await bcryptjs.compare(password, employer['password']);
             if (!isPasswordCorrect) return responseHelper(false, INVALID_PASSWORD, 401, '', {}, res);
 
             // Generate a JWT token
@@ -47,7 +47,7 @@ module.exports = {
             if (password !== confirm_password) return responseHelper(false, PASSWORD_NOT_MATCHED, 422, '', {}, res);
 
             // Hash the password
-            const encryptedPassword = await bcrypt.hash(password, 10);
+            const encryptedPassword = await bcryptjs.hash(password, 10);
 
             // Create a new Employee document
             const employee = new Employee({
@@ -130,7 +130,7 @@ module.exports = {
                 const userWithSameEmail = await Employee.findOne({ email: emp.email });
                 if (userWithSameEmail) return; // skip this employee if they already exist in the database
 
-                const encryptedPassword = await bcrypt.hash(emp.password.toString(), 10);
+                const encryptedPassword = await bcryptjs.hash(emp.password.toString(), 10);
                 emp.password = encryptedPassword;
 
                 return emp;
