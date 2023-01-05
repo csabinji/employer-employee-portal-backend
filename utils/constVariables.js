@@ -7,6 +7,7 @@ module.exports = {
     EMPLOYER_NOT_FOUND: 'Employer with this email do not exists',
 
     EMPLOYEE_ADDED: 'New Employee added successfully',
+    EMPLOYEE_NOT_FOUND: 'Employee with this email do not exists',
 
     INVALID_PASSWORD: 'Incorrect password',
 
