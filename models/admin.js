@@ -8,9 +8,6 @@ const adminSchema = new mongoose.Schema(
         email: {
             type: String,
         },
-        company: {
-            type: String,
-        },
         password: {
             type: String,
         },
