@@ -12,6 +12,7 @@ const bcryptjs = require("bcryptjs");
 const tokenGenerator = require("../helper/tokenGenerator");
 const responseHelper = require("../helper/responseHelper");
 const XLSX = require('xlsx');
+const { sendMessage } = require("../config/publisher");
 
 module.exports = {
     login: async (req, res) => {
@@ -138,7 +139,9 @@ module.exports = {
 
             employee = await employee.filter((emp) => emp !== null && emp !== undefined);
 
-            await Employee.create(employee);
+            if (employee.length != 0) {
+                employee.map(async (e) => { await sendMessage(e) });
+            }
 
             return responseHelper(false, 'Employee details imported.', 201, '', {}, res);
         } catch (error) {

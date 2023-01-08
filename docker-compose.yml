@@ -12,6 +12,26 @@ services:
       - PORT=8001
     volumes:
       - ./../eeportal:/app
+  eeportal_frontend:
+    build: ../eeportal_frontend
+    container_name: eeportal_frontend
+    hostname: eeportal_frontend
+    ports:
+      - "3001:8002"
+    volumes:
+      - ./../eeportal_frontend:/app
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    container_name: eeportal_rabbitmq
+    restart: on-failure
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - 5674:5672
+      - 15674:15672
   mongo:
     image: mongo
     hostname: mongo
