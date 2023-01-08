@@ -83,5 +83,14 @@ module.exports = {
             console.log(error);
             return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
         }
+    },
+    listEmployer: async (req, res) => {
+        try {
+            const employer = await Employer.find().lean();
+            return responseHelper(true, "Employer list fetached", 201, '', employer, res);
+        } catch (error) {
+            console.log(error);
+            return responseHelper(false, SERVER_ERROR, 500, '', {}, res);
+        }
     }
 }
