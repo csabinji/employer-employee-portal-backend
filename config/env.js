@@ -13,8 +13,6 @@ module.exports = {
     JWT_SECRET: env['JWT_SECRET'],
     JWT_EXPIRATION: env['JWT_EXPIRATION'],
 
-    MAIL_SERVICE: env['MAIL_SERVICE'],
-    MAIL_ACCOUNT: env['MAIL_ACCOUNT'],
     MONGO_DB_URL: env['MONGO_DB_URL'],
 
     PORT: env['PORT'],

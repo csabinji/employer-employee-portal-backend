@@ -109,6 +109,35 @@
                 }
             }
         },
+        "/api/v1/employer/list": {
+            "get": {
+                "summary": "List all employer",
+                "tags": [
+                    "Admin"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": {
+                            "$ref": "#/components/securitySchemes/bearerAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request successfully executed"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "default": {
+                        "description": "Unexpected error"
+                    }
+                }
+            }
+        },
         "/api/v1/employer/login": {
             "post": {
                 "summary": "Employer Login",
